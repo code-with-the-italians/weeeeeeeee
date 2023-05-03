@@ -1,4 +1,4 @@
-package com.github.rock3r.weeeeeeeee
+package it.codewiththeitalians.weeeeeeeee
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
