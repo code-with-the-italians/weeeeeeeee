@@ -4,8 +4,10 @@ import com.intellij.application.subscribe
 import com.intellij.ide.ui.LafManager
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.components.Service
 import javax.swing.UIManager
 
+@Service
 class PizzaService : Disposable, LafManagerListener {
 
     init {

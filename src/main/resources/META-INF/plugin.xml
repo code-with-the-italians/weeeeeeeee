@@ -7,10 +7,8 @@
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
-    <application-components>
-
-        <component>
-            <implementation-class>it.codewiththeitalians.weeeeeeeee.PizzaService</implementation-class>
-        </component>
-    </application-components>
+    <applicationListeners>
+        <listener class="it.codewiththeitalians.weeeeeeeee.MyDynamicPluginListener" topic="com.intellij.ide.plugins.DynamicPluginListener" />
+        <listener class="it.codewiththeitalians.weeeeeeeee.MyAppLifecycleListener" topic="com.intellij.ide.AppLifecycleListener"/>
+    </applicationListeners>
 </idea-plugin>
