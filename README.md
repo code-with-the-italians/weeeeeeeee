@@ -1,8 +1,8 @@
 # weeeeeeeee
 
 ![Build](https://github.com/code-with-the-italians/weeeeeeeee/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/it.codewiththeitalians.weeeeeeeee.svg)](https://plugins.jetbrains.com/plugin/it.codewiththeitalians.weeeeeeeee)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/it.codewiththeitalians.weeeeeeeee.svg)](https://plugins.jetbrains.com/plugin/it.codewiththeitalians.weeeeeeeee)
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.
