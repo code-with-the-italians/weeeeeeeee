@@ -10,7 +10,7 @@
     <application-components>
 
         <component>
-            <implementation-class>it.codewiththeitalians.weeeeeeeee.NyanService</implementation-class>
+            <implementation-class>it.codewiththeitalians.weeeeeeeee.PizzaService</implementation-class>
         </component>
     </application-components>
 </idea-plugin>
