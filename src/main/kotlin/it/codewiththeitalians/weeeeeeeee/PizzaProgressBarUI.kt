@@ -1,117 +1,108 @@
 package it.codewiththeitalians.weeeeeeeee
 
-import com.intellij.openapi.util.ScalableIcon
-import com.intellij.ui.Gray
 import com.intellij.ui.JBColor
 import com.intellij.ui.scale.JBUIScale
+import com.intellij.ui.util.preferredHeight
+import com.intellij.ui.util.preferredWidth
 import com.intellij.util.ui.GraphicsUtil
 import com.intellij.util.ui.UIUtil
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
+import java.awt.Insets
 import java.awt.LinearGradientPaint
 import java.awt.geom.AffineTransform
-import java.awt.geom.Area
-import java.awt.geom.Rectangle2D
 import java.awt.geom.RoundRectangle2D
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.SwingConstants
 import javax.swing.plaf.basic.BasicProgressBarUI
+import kotlin.math.roundToInt
+import kotlin.random.Random
 
 internal class PizzaProgressBarUI : BasicProgressBarUI() {
 
-    override fun getPreferredSize(c: JComponent?): Dimension =
-        Dimension(super.getPreferredSize(c).width, JBUIScale.scale(20))
+    private val italianPaints = listOf(
+        JBColor(FLAG_RED_LIGHT, FLAG_RED_DARK),
+        JBColor(FLAG_WHITE_LIGHT, FLAG_WHITE_DARK),
+        JBColor(FLAG_GREEN_LIGHT, FLAG_GREEN_DARK)
+    )
 
-    @Volatile
-    private var offset = 0
+    private var iconOffsetX = 0
+    private var isGoingRight = true
 
-    @Volatile
-    private var offset2 = 0
+    private var icon: Icon = PizzaIcons.PizzaRight.resize(iconSize)
 
-    @Volatile
-    private var velocity = 1
-    override fun paintIndeterminate(g2d: Graphics?, c: JComponent) {
+    private val iconSize
+        get() = JBUIScale.scale(20)
+
+    override fun getPreferredSize(c: JComponent): Dimension =
+        Dimension(super.getPreferredSize(c).width, iconSize + c.insets.vertical)
+
+    override fun paintIndeterminate(g2d: Graphics, c: JComponent) {
         if (g2d !is Graphics2D) {
             return
         }
-        val b = progressBar.insets // area for border
-        val barRectWidth = progressBar.width - (b.right + b.left)
-        val barRectHeight = progressBar.height - (b.top + b.bottom)
-        if (barRectWidth <= 0 || barRectHeight <= 0) {
+
+        GraphicsUtil.setupAAPainting(g2d)
+
+        val insets = progressBar.insets
+        val barWidth = progressBar.width - insets.horizontal
+        val barHeight = progressBar.height - insets.vertical
+        if (barWidth <= 0 || barHeight <= 0) {
             return
         }
-        g2d.color = JBColor(Gray._240.withAlpha(50), Gray._128.withAlpha(50))
-        val w = c.width
-        var h = c.preferredSize.height
-        if (!isEven(c.height - h)) h++
 
-        val basePizzaPaint = LinearGradientPaint(
-            0f,
-            JBUIScale.scale(2).toFloat(),
-            0f,
-            (h - JBUIScale.scale(6)).toFloat(),
-            floatArrayOf(
-                ONE_OVER_THREE * 1,
-                ONE_OVER_THREE * 2,
-                ONE_OVER_THREE * 3,
-            ),
-            arrayOf(Color(0xA80000), Color.WHITE, Color(0x008800)),
-        )
-        g2d.paint = basePizzaPaint
-        if (c.isOpaque) {
-            g2d.fillRect(0, (c.height - h) / 2, w, h)
-        }
-        g2d.color = JBColor(Gray._165.withAlpha(50), Gray._88.withAlpha(50))
-        val config = GraphicsUtil.setupAAPainting(g2d)
-        g2d.translate(0, (c.height - h) / 2)
-        val x = -offset
+        val componentWidth = c.preferredWidth
+        val componentHeight = c.preferredHeight
 
-        val old = g2d.paint
-        g2d.paint = basePizzaPaint
-        val R = JBUIScale.scale(8f)
-        val R2 = JBUIScale.scale(9f)
-        val containingRoundRect = Area(RoundRectangle2D.Float(1f, 1f, w - 2f, h - 2f, R, R))
-        g2d.fill(containingRoundRect)
-        g2d.paint = old
-        offset = (offset + 1) % getPeriodLength()
-        offset2 += velocity
-        if (offset2 <= 2) {
-            offset2 = 2
-            velocity = 1
-        } else if (offset2 >= w - JBUIScale.scale(15)) {
-            offset2 = w - JBUIScale.scale(15)
-            velocity = -1
+        updateIcon(barWidth)
+
+        g2d.drawItalianFlag(componentWidth, componentHeight, insets, barHeight, barWidth)
+        g2d.drawPizzaIcon(insets.top, barHeight)
+    }
+
+    private fun updateIcon(barWidth: Int) {
+        val tick = JBUIScale.scale(1)
+        if (isGoingRight) iconOffsetX += tick else iconOffsetX -= tick
+
+        if (iconOffsetX > barWidth) {
+            icon = PizzaIcons.PizzaLeft.resize(iconSize)
+            isGoingRight = false
         }
-        val area = Area(Rectangle2D.Float(0f, 0f, w.toFloat(), h.toFloat()))
-        area.subtract(Area(RoundRectangle2D.Float(1f, 1f, w - 2f, h - 2f, R, R)))
-        g2d.paint = Gray._128
-        if (c.isOpaque) {
-            g2d.fill(area)
+        if (iconOffsetX < -iconSize) {
+            icon = PizzaIcons.PizzaRight.resize(iconSize)
+            isGoingRight = true
         }
-        area.subtract(Area(RoundRectangle2D.Float(0f, 0f, w.toFloat(), h.toFloat(), R2, R2)))
-        val parent = c.parent
-        val background = if (parent != null) parent.background else UIUtil.getPanelBackground()
-        g2d.paint = background
-        if (c.isOpaque) {
-            g2d.fill(area)
+    }
+
+    private fun Graphics2D.drawItalianFlag(
+        componentWidth: Int,
+        componentHeight: Int,
+        insets: Insets,
+        barHeight: Int,
+        barWidth: Int
+    ) {
+        val barArc = JBUIScale.scale(8f)
+        val barShape = RoundRectangle2D.Float(1f, 1f, componentWidth - 2f, componentHeight - 2f, barArc, barArc)
+        val oldClip = clip
+        clip(barShape)
+
+        val stripeHeight = (barHeight.toFloat() / italianPaints.size).roundToInt()
+        for ((index, paint) in italianPaints.withIndex()) {
+            this.paint = paint
+            fillRect(insets.left, insets.top + stripeHeight * index, barWidth, stripeHeight)
         }
 
-        val scaledIcon: Icon = if (velocity > 0) NyanIcons.Pizza as ScalableIcon else (NyanIcons.PizzaFlip as ScalableIcon)
-        scaledIcon.paintIcon(progressBar, g2d, offset2 - JBUIScale.scale(10), -JBUIScale.scale(6))
-        g2d.draw(RoundRectangle2D.Float(1f, 1f, w - 2f - 1f, h - 2f - 1f, R, R))
-        g2d.translate(0, -(c.height - h) / 2)
+        clip(oldClip)
+    }
 
-        if (progressBar.isStringPainted) {
-            if (progressBar.orientation === SwingConstants.HORIZONTAL) {
-                paintString(g2d, b.left, b.top, barRectWidth, barRectHeight, boxRect.x, boxRect.width)
-            } else {
-                paintString(g2d, b.left, b.top, barRectWidth, barRectHeight, boxRect.y, boxRect.height)
-            }
-        }
-        config.restore()
+    private fun Graphics2D.drawPizzaIcon(barY: Int, barHeight: Int) {
+        val yOffset = barY + barHeight / 2 - iconSize / 2
+        val jitterX = Random.nextInt(4) - 2
+        val jitterY = Random.nextInt(4) - 2
+        icon.paintIcon(progressBar, this, iconOffsetX - iconSize / 2 + jitterX, yOffset + jitterY)
     }
 
     override fun paintDeterminate(g: Graphics, c: JComponent) {
@@ -159,7 +150,7 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
             ),
             arrayOf(Color(0xA80000), Color.WHITE, Color(0x008800)),
         )
-        NyanIcons.Pizza.paintIcon(progressBar, g, amountFull - JBUIScale.scale(10), -JBUIScale.scale(6))
+        PizzaIcons.PizzaLeft.paintIcon(progressBar, g, amountFull - JBUIScale.scale(10), -JBUIScale.scale(6))
         g.fill(RoundRectangle2D.Float(2f * off, 2f * off, amountFull - JBUIScale.scale(5f), h - JBUIScale.scale(5f), JBUIScale.scale(7f), JBUIScale.scale(7f)))
         g.translate(0, -(c.height - h) / 2)
 
@@ -225,5 +216,13 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
     companion object {
 
         private const val ONE_OVER_THREE = 1f / 3
+
+        private const val FLAG_RED_LIGHT = 0xFF0000
+        private const val FLAG_WHITE_LIGHT = 0xFFFFFF
+        private const val FLAG_GREEN_LIGHT = 0x00DD00
+
+        private const val FLAG_RED_DARK = 0xA80000
+        private const val FLAG_WHITE_DARK = 0xDDDDDD
+        private const val FLAG_GREEN_DARK = 0x008800
     }
 }
