@@ -95,3 +95,18 @@ jobs:
             --body "Current pull request contains patched \`CHANGELOG.md\` file for the \`$VERSION\` version." \
             --label "$LABEL" \
             --head $BRANCH
+
+      - name: Notify on Telegram
+        uses: appleboy/telegram-action@v0.1.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            ✨ Good news everyone! ✨
+            
+            A new version of the [*Weeeeeeeee(th the Italians)*](https://cwti.link/ide-plugin) plugin has just been released!
+            You should find the update to {{ github.event.release.tag_name }} in your IDE soon. Y'all know what to do 😉
+            
+            The release notes are [here](https://github.com/${{ github.repository }}/releases/tag/{{ github.event.release.tag_name }})
+
