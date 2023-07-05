@@ -5,7 +5,13 @@
     <idea-version since-build="231" />
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.PizzaBundle</resource-bundle>
+
+    <actions>
+        <action class="it.codewiththeitalians.weeeeeeeee.PizzaTimeAction" id="PizzaTime" internal="true" >
+            <add-to-group group-id="Internal.UI" anchor="before" relative-to-action="ShowProgressTestDialogAction" />
+        </action>
+    </actions>
 
     <applicationListeners>
         <listener class="it.codewiththeitalians.weeeeeeeee.MyDynamicPluginListener" topic="com.intellij.ide.plugins.DynamicPluginListener" />
