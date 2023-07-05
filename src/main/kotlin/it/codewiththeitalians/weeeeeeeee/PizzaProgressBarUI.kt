@@ -26,15 +26,24 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
     private var iconOffsetX = 0
     private var isGoingRight = true
 
-    private var icon: Icon = PizzaIcons.PizzaRight.resize(iconSize)
+    private var icon: Icon = PizzaIcons.PizzaGoingRight.resize(iconSize)
 
     private val iconSize
         get() = JBUIScale.scale(20)
+
+
+    private var isIndeterminate: Boolean = false
+        set(value) {
+            if (field != value) resetState()
+            field = value
+        }
+
 
     override fun getPreferredSize(c: JComponent): Dimension =
         Dimension(super.getPreferredSize(c).width, iconSize + c.insets.vertical)
 
     override fun paintIndeterminate(g2d: Graphics, c: JComponent) {
+        isIndeterminate = true
         if (g2d !is Graphics2D) {
             return
         }
@@ -59,6 +68,7 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
     }
 
     override fun paintDeterminate(g2d: Graphics, c: JComponent) {
+        isIndeterminate = false
         if (g2d !is Graphics2D) {
             return
         }
@@ -110,11 +120,11 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
         if (isGoingRight) iconOffsetX += tick else iconOffsetX -= tick
 
         if (iconOffsetX > barWidth) {
-            icon = PizzaIcons.PizzaLeft.resize(iconSize)
+            icon = PizzaIcons.PizzaGoingLeft.resize(iconSize)
             isGoingRight = false
         }
         if (iconOffsetX < -iconSize) {
-            icon = PizzaIcons.PizzaRight.resize(iconSize)
+            icon = PizzaIcons.PizzaGoingRight.resize(iconSize)
             isGoingRight = true
         }
     }
@@ -154,6 +164,12 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
     }
 
     override fun getBoxLength(availableLength: Int, otherDimension: Int): Int = availableLength
+
+    private fun resetState() {
+        iconOffsetX = 0
+        isGoingRight = true
+        icon = PizzaIcons.PizzaGoingRight.resize(iconSize)
+    }
 
     companion object {
 
