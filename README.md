@@ -1,4 +1,4 @@
-# weeeeeeeee
+# Weeeeeeeee(th the Italians)
 
 ![Build](https://github.com/code-with-the-italians/weeeeeeeee/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/it.codewiththeitalians.weeeeeeeee.svg)](https://plugins.jetbrains.com/plugin/it.codewiththeitalians.weeeeeeeee)
