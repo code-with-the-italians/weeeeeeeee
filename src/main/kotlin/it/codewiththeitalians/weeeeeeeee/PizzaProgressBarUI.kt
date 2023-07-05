@@ -77,7 +77,7 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
 
         val insets = progressBar.insets
         val progress = progressBar.value.toFloat() / progressBar.maximum
-        val barWidth = ((progressBar.width - insets.horizontal) * progress).roundToInt()
+        val barWidth = ((progressBar.width - insets.horizontal) * progress + iconSize * progress).roundToInt()
 
         val barHeight = progressBar.height - insets.vertical
         if (barWidth <= 0 || barHeight <= 0) {
