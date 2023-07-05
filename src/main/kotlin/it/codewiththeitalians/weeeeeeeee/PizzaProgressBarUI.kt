@@ -2,8 +2,6 @@ package it.codewiththeitalians.weeeeeeeee
 
 import com.intellij.ui.JBColor
 import com.intellij.ui.scale.JBUIScale
-import com.intellij.ui.util.preferredHeight
-import com.intellij.ui.util.preferredWidth
 import com.intellij.util.ui.GraphicsUtil
 import java.awt.Dimension
 import java.awt.Graphics
@@ -49,8 +47,8 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
             return
         }
 
-        val componentWidth = c.preferredWidth
-        val componentHeight = c.preferredHeight
+        val componentWidth = c.width
+        val componentHeight = c.height
 
         updateIcon(barWidth)
 
@@ -85,8 +83,8 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
             return
         }
 
-        val componentWidth = c.preferredWidth
-        val componentHeight = c.preferredHeight
+        val componentWidth = c.width
+        val componentHeight = c.height
 
         updateIcon(barWidth)
 
