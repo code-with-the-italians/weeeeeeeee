@@ -14,6 +14,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 internal class PizzaProgressBarUI : BasicProgressBarUI() {
 
     private val italianPaints = listOf(
@@ -47,18 +48,7 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
             return
         }
 
-        val componentWidth = c.width
-        val componentHeight = c.height
-
-        updateIcon(barWidth)
-
-        g2d.drawItalianFlag(
-            componentWidth = componentWidth,
-            componentHeight = componentHeight,
-            insets = insets,
-            barHeight = barHeight,
-            barWidth = barWidth
-        )
+        doDraw(insets, barWidth, barHeight, c, g2d)
 
         g2d.drawPizzaIcon(
             barY = insets.top,
@@ -78,11 +68,29 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
         val insets = progressBar.insets
         val progress = progressBar.value.toFloat() / progressBar.maximum
         val barWidth = ((progressBar.width - insets.horizontal) * progress).roundToInt()
+
         val barHeight = progressBar.height - insets.vertical
         if (barWidth <= 0 || barHeight <= 0) {
             return
         }
 
+        doDraw(insets, barWidth, barHeight, c, g2d)
+
+        g2d.drawPizzaIcon(
+            barY = insets.top,
+            barHeight = barHeight,
+            xOffset = insets.left + barWidth,
+            isJittery = false
+        )
+    }
+
+    private fun doDraw(
+        insets: Insets,
+        barWidth: Int,
+        barHeight: Int,
+        c: JComponent,
+        g2d: Graphics2D,
+    ) {
         val componentWidth = c.width
         val componentHeight = c.height
 
@@ -94,13 +102,6 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
             insets = insets,
             barHeight = barHeight,
             barWidth = barWidth
-        )
-
-        g2d.drawPizzaIcon(
-            barY = insets.top,
-            barHeight = barHeight,
-            xOffset = insets.left + barWidth,
-            isJittery = false
         )
     }
 
