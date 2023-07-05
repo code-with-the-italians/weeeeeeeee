@@ -1,12 +1,16 @@
 package it.codewiththeitalians.weeeeeeeee
 
 import com.intellij.ui.JBColor
+import com.intellij.ui.NewUI
 import com.intellij.ui.scale.JBUIScale
+import com.intellij.ui.scale.JBUIScale.scale
 import com.intellij.util.ui.GraphicsUtil
+import java.awt.BasicStroke
 import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.Insets
+import java.awt.Shape
 import java.awt.geom.RoundRectangle2D
 import javax.swing.Icon
 import javax.swing.JComponent
@@ -23,13 +27,18 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
         JBColor(FLAG_GREEN_LIGHT, FLAG_GREEN_DARK)
     )
 
+    private val oldUiBorderColor = JBColor(0xCCCCCC, 0x555555)
+    private val newUiBorderColor = JBColor(0xCCCCCC, 0x111111)
+    private val borderColor
+        get() = if (NewUI.isEnabled()) newUiBorderColor else oldUiBorderColor
+
     private var iconOffsetX = 0
     private var isGoingRight = true
 
     private var icon: Icon = PizzaIcons.PizzaGoingRight.resize(iconSize)
 
     private val iconSize
-        get() = JBUIScale.scale(20)
+        get() = scale(20)
 
 
     private var isIndeterminate: Boolean = false
@@ -106,13 +115,14 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
 
         updateIcon(barWidth)
 
-        g2d.drawItalianFlag(
-            componentWidth = componentWidth,
-            componentHeight = componentHeight,
-            insets = insets,
-            barHeight = barHeight,
-            barWidth = barWidth
-        )
+        val barArc = scale(8f)
+        val barShape = RoundRectangle2D.Float(1f, 1f, componentWidth - 2f, componentHeight - 2f, barArc, barArc)
+
+        g2d.drawItalianFlag(insets, barHeight, barWidth, barShape)
+
+        g2d.stroke = BasicStroke(scale(2f))
+        g2d.color = borderColor
+        g2d.draw(barShape)
     }
 
     private fun updateIcon(barWidth: Int) {
@@ -130,14 +140,11 @@ internal class PizzaProgressBarUI : BasicProgressBarUI() {
     }
 
     private fun Graphics2D.drawItalianFlag(
-        componentWidth: Int,
-        componentHeight: Int,
         insets: Insets,
         barHeight: Int,
-        barWidth: Int
+        barWidth: Int,
+        barShape: Shape,
     ) {
-        val barArc = JBUIScale.scale(8f)
-        val barShape = RoundRectangle2D.Float(1f, 1f, componentWidth - 2f, componentHeight - 2f, barArc, barArc)
         val oldClip = clip
         clip(barShape)
 

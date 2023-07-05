@@ -2,7 +2,7 @@
     <id>it.codewiththeitalians.weeeeeeeee</id>
     <name>Weeeeeeeee(th the Italians)</name>
     <vendor url="https://codewiththeitalians.it">Code with the Italians</vendor>
-    <idea-version since-build="231" />
+    <idea-version since-build="231.8109.90" />
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.PizzaBundle</resource-bundle>
