@@ -5,7 +5,7 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 
-class MyDynamicPluginListener : DynamicPluginListener {
+class PizzaDynamicPluginListener : DynamicPluginListener {
 
     override fun pluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
         if (pluginDescriptor.pluginId == PluginId.getId("it.codewiththeitalians.weeeeeeeee")) {
