@@ -6,8 +6,8 @@ import com.intellij.openapi.util.ScalableIcon
 object PizzaIcons {
 
     @JvmField
-    val PizzaGoingLeft = IconLoader.getIcon("pizza-32.png", PizzaIcons::class.java.classLoader) as ScalableIcon
+    val PizzaGoingLeft = IconLoader.getIcon("pizza-left.svg", PizzaIcons::class.java.classLoader) as ScalableIcon
 
     @JvmField
-    val PizzaGoingRight = IconLoader.getIcon("pizza-flip-32.png", PizzaIcons::class.java.classLoader) as ScalableIcon
+    val PizzaGoingRight = IconLoader.getIcon("pizza-right.svg", PizzaIcons::class.java.classLoader) as ScalableIcon
 }
