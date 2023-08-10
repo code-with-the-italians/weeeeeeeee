@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Potential crash in some odd, rare cases (negative sized icon request)
+
 ## [2.1.0] - 2023-08-07
 
 ### Added
