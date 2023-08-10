@@ -2,7 +2,7 @@
     <id>it.codewiththeitalians.weeeeeeeee</id>
     <!--suppress PluginXmlCapitalization -->
     <name>Weeeeeeeee(th the Italians)</name>
-    <vendor url="https://codewiththeitalians.it">Code with the Italians</vendor>
+    <vendor url="https://codewiththeitalians.it">cwti</vendor>
     <idea-version since-build="231.8109.175"/>
     <depends>com.intellij.modules.platform</depends>
 
