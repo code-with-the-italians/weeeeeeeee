@@ -11,7 +11,7 @@ internal val Insets.vertical
 
 internal fun ScalableIcon.resize(sizePx: Int) =
     if (sizePx != iconWidth) {
-        scale(sizePx / iconWidth.toFloat())
+        scale((sizePx.coerceAtLeast(1) / iconWidth.toFloat()))
     } else {
         this
     }
