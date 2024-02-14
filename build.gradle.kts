@@ -5,7 +5,7 @@ fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
 
 plugins {
-    id("java")
+    java
     alias(libs.plugins.kotlin)
     alias(libs.plugins.gradleIntelliJPlugin)
     alias(libs.plugins.changelog)
@@ -121,4 +121,9 @@ tasks {
     buildSearchableOptions {
         enabled = false
     }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
